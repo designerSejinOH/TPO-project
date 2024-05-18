@@ -6,7 +6,7 @@
 // 2 - add <ScrollTicker /> wherever in the canvas
 // 3 - enjoy
 import { addEffect, useFrame } from '@react-three/fiber'
-import Lenis from '@studio-freight/lenis'
+import Lenis, { LenisOptions } from '@studio-freight/lenis'
 import { useEffect } from 'react'
 import { useRef } from 'react'
 import * as THREE from 'three'
@@ -34,7 +34,7 @@ export default function Scroll({ children }) {
       smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
-    })
+    } as LenisOptions) // Add 'as LenisOptions' to specify the type of the options object
 
     lenis.on('scroll', ({ scroll, progress }) => {
       state.top = scroll
@@ -56,13 +56,15 @@ export default function Scroll({ children }) {
         width: '100%',
         height: '100%',
         top: 0,
-      }}>
+      }}
+    >
       <div
         ref={content}
         style={{
           position: 'relative',
           minHeight: '200vh',
-        }}>
+        }}
+      >
         {children}
       </div>
     </div>

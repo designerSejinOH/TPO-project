@@ -2,8 +2,9 @@ import { Layout } from '@/components/dom/Layout'
 import '@/global.css'
 
 export const metadata = {
-  title: 'Next.js + Three.js',
-  description: 'A minimal starter for Nextjs + React-three-fiber and Threejs.',
+  title: 'TPO + F',
+  description:
+    'TPO means Time, Place, Occasion. And F means Favor, Feedback... It is a new media ux design project founded by Sejin Oh and Hyungdong Hwhang.',
 }
 
 export default function RootLayout({ children }) {

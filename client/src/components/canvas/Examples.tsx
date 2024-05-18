@@ -1,11 +1,12 @@
 'use client'
 
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, Points, PointMaterial } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useMemo, useRef, useState } from 'react'
 import { Line, useCursor, MeshDistortMaterial } from '@react-three/drei'
 import { useRouter } from 'next/navigation'
+import * as random from 'maath/random/dist/maath-random.esm'
 
 export const Blob = ({ route = '/', ...props }) => {
   const router = useRouter()
@@ -16,7 +17,8 @@ export const Blob = ({ route = '/', ...props }) => {
       onClick={() => router.push(route)}
       onPointerOver={() => hover(true)}
       onPointerOut={() => hover(false)}
-      {...props}>
+      {...props}
+    >
       <sphereGeometry args={[1, 64, 64]} />
       <MeshDistortMaterial roughness={0.5} color={hovered ? 'hotpink' : '#1fb2f5'} />
     </mesh>
@@ -65,4 +67,20 @@ export function Dog(props) {
   const { scene } = useGLTF('/dog.glb')
 
   return <primitive object={scene} {...props} />
+}
+
+export function Stars(props) {
+  const ref = useRef(null)
+  const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 5 }))
+  useFrame((state, delta) => {
+    ref.current.rotation.x -= delta / 10
+    ref.current.rotation.y -= delta / 15
+  })
+  return (
+    <group rotation={[0, 0, Math.PI / 4]}>
+      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
+        <PointMaterial transparent color='#ffa0e0' size={0.009} sizeAttenuation={true} depthWrite={false} />
+      </Points>
+    </group>
+  )
 }

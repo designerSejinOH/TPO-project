@@ -1,8 +1,8 @@
-const title = 'React Three Next Starter'
-const url = 'https://react-three-next.vercel.app/'
-const description = 'The easiest and fastest way to create a 3D website using React Three Fiber and NextJS'
-const author = 'Author'
-const twitter = '@pmndrs'
+const title = 'TPO + F'
+const url = 'https://tpo.vercel.app'
+const description =
+  'TPO means Time, Place, Occasion. And F means Favor, Feedback... It is a new media ux design project founded by Sejin Oh and Hyungdong Hwhang.'
+const author = 'SEJIN OH'
 
 export default function Head() {
   return (
@@ -20,7 +20,7 @@ export default function Head() {
       <meta name='description' content={description} />
       <meta
         name='keywords'
-        content='Software Engineer,Product Manager,Project Manager,Data Scientist,Computer Scientist'
+        content='TPO, F, Time, Place, Occasion, Favor, Feedback, Sejin Oh, Hyungdong Hwhang, new media, ux design'
       />
       <meta name='robots' content='index,follow' />
       <meta name='distribution' content='web' />
@@ -53,8 +53,8 @@ export default function Head() {
       Twitter Summary card
         documentation: https://dev.twitter.com/cards/getting-started
         Be sure validate your Twitter card markup on the documentation site. */}
-      <meta name='twitter:card' content='summary' />
-      <meta name='twitter:site' content={twitter} />
+      {/* <meta name='twitter:card' content='summary' />
+      <meta name='twitter:site' content={twitter} /> */}
     </>
   )
 }
