@@ -16,5 +16,32 @@
     padding: 0;
     overflow: hidden;
     background-color: #0f0f0f;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
+
+  canvas {
+    touch-action: none;
+  }
+
+  .no-pointer-events {
+    pointer-events: none;
+  }
+
+  .no-scroll-bar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .no-scroll-bar::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera*/
+  }
+
 }
