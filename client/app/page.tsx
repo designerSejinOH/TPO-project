@@ -220,7 +220,7 @@ export default function Page() {
                     onChange={(e) =>
                       setLength(
                         //@ts-ignore
-                        Math.min(Math.max(parseInt(e.target.value), 0), 300),
+                        Math.min(Math.max(parseInt(e.target.value), 0), 1000),
                       )
                     }
                     className='border-b-[0.5px] border-[#bdc3c7] mr-1 w-12 px-1 h-fit text-white bg-black text-xs'
