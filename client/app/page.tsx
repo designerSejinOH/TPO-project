@@ -177,7 +177,9 @@ function CameraControls() {
     camera,
     gl: { domElement },
   } = useThree()
-  return <OrbitControls args={[camera, domElement]} enableDamping dampingFactor={0.1} />
+  return (
+    <OrbitControls args={[camera, domElement]} autoRotate autoRotateSpeed={0.5} enableDamping dampingFactor={0.1} />
+  )
 }
 
 export default function Page() {
