@@ -66,18 +66,14 @@ function Edge({ points, lineWidth }: { points: any; lineWidth: number }) {
 function Network({
   length,
   isEmotion,
-  randomRadius,
+  radiusSensitivity,
   lineWidth,
 }: {
   length?: number
   isEmotion?: boolean
-  randomRadius?: boolean
+  radiusSensitivity?: number
   lineWidth?: number
 }) {
-  const [hoveredNode, setHoveredNode] = useState(null)
-
-  const [explainedNode, setExplainedNode] = useState([])
-
   const emotions = [
     ['분노 😡', 'red'],
     ['기쁨 😊', 'yellow'],
@@ -91,39 +87,27 @@ function Network({
     ['무표정 😐', 'black'],
   ]
 
+  const [hoveredNode, setHoveredNode] = useState(null)
+  const [explainedNode, setExplainedNode] = useState([])
+
   const nodes = useMemo(() => {
     const nodes = []
-    const fixedRadius = 100 // 고정 반경
-    const minRadius = 50 // 최소 반경
-    const maxRadius = 150 // 최대 반경
-    const minDistance = 5 // 최소 거리
+    const baseRadius = 100 // 기본 반경
+    const maxVariation = 50 // 최대 변동 반경
 
     for (let i = 0; i < length; i++) {
-      let x: number, y: number, z: number, radius: number
-      let tooClose: boolean
-
-      do {
-        const alpha = Math.random() * Math.PI * 2
-        const beta = Math.random() * Math.PI - Math.PI / 2
-        radius = randomRadius ? minRadius + Math.random() * (maxRadius - minRadius) : fixedRadius // 조건에 따른 반경 설정
-        x = radius * Math.sin(alpha) * Math.cos(beta)
-        y = radius * Math.sin(alpha) * Math.sin(beta)
-        z = radius * Math.cos(alpha)
-
-        tooClose = false
-        for (let node of nodes) {
-          const distance = Math.sqrt((node.x - x) ** 2 + (node.y - y) ** 2 + (node.z - z) ** 2)
-          if (distance < minDistance) {
-            tooClose = true
-            break
-          }
-        }
-      } while (tooClose)
+      const alpha = Math.random() * Math.PI * 2
+      const beta = Math.random() * Math.PI - Math.PI / 2
+      const variation = Math.random() * maxVariation * radiusSensitivity
+      const radius = baseRadius + variation // 슬라이더 값에 따라 반경 설정
+      const x = radius * Math.sin(alpha) * Math.cos(beta)
+      const y = radius * Math.sin(alpha) * Math.sin(beta)
+      const z = radius * Math.cos(alpha)
 
       nodes.push(new THREE.Vector3(x, y, z))
     }
     return nodes
-  }, [length, randomRadius]) // randomRadius 의존성 추가
+  }, [length, radiusSensitivity]) // radiusSensitivity 의존성 추가
 
   const edges = useMemo(() => {
     const edges = []
@@ -208,6 +192,7 @@ export default function Page() {
   const [isEmotion, setIsEmotion] = useState(true)
   const [randomRadius, setRandomRadius] = useState(false) // 반경 랜덤 모드 토글
   const [lineWidth, setLineWidth] = useState(false)
+  const [radiusSensitivity, setRadiusSensitivity] = useState(0) // 반경 감도 초기값 설정
 
   return (
     <>
@@ -258,6 +243,18 @@ export default function Page() {
                     <label className='text-white'>time On/Off</label>
                   </div>
                 </div>
+                <div className='slider'>
+                  <input
+                    type='range'
+                    min='0'
+                    max='1'
+                    step='0.01'
+                    value={radiusSensitivity}
+                    onChange={(e) => setRadiusSensitivity(parseFloat(e.target.value))}
+                    className='w-24 bg-black'
+                  />
+                  <label className='text-white'>Radius Sensitivity: {radiusSensitivity}</label>
+                </div>
               </div>
             </div>
           </div>
@@ -273,8 +270,8 @@ export default function Page() {
                     key={length}
                     length={length}
                     isEmotion={isEmotion}
-                    randomRadius={randomRadius}
                     lineWidth={lineWidth ? 0.0 : 0.1}
+                    radiusSensitivity={radiusSensitivity}
                   />
                 </Resize>
                 <CameraControls />
