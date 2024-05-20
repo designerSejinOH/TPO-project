@@ -17,6 +17,7 @@
     "glsl-random": "^0.0.5",
     "maath": "^0.10.7",
     "next": "^14.0.4",
+    "pretty-checkbox": "^3.0.3",
     "r3f-perf": "^7.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
