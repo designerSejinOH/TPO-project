@@ -59,11 +59,21 @@ function Node({ idx, position, onHover, onUnhover, hovered, explained, emotion }
   )
 }
 
-function Edge({ points }) {
-  return <Line points={points} color='skyblue' lineWidth={0.1} />
+function Edge({ points, lineWidth }: { points: any; lineWidth: number }) {
+  return <Line points={points} color='skyblue' lineWidth={lineWidth} />
 }
 
-function Network({ length, isEmotion }: { length?: number; isEmotion?: boolean }) {
+function Network({
+  length,
+  isEmotion,
+  randomRadius,
+  lineWidth,
+}: {
+  length?: number
+  isEmotion?: boolean
+  randomRadius?: boolean
+  lineWidth?: number
+}) {
   const [hoveredNode, setHoveredNode] = useState(null)
 
   const [explainedNode, setExplainedNode] = useState([])
@@ -83,16 +93,19 @@ function Network({ length, isEmotion }: { length?: number; isEmotion?: boolean }
 
   const nodes = useMemo(() => {
     const nodes = []
-    const radius = 100
-    const minDistance = 5 // 최소 거리를 15로 설정
+    const fixedRadius = 100 // 고정 반경
+    const minRadius = 50 // 최소 반경
+    const maxRadius = 150 // 최대 반경
+    const minDistance = 5 // 최소 거리
 
     for (let i = 0; i < length; i++) {
-      let x: number, y: number, z: number // 노드의 x, y, z 좌표
+      let x: number, y: number, z: number, radius: number
       let tooClose: boolean
 
       do {
         const alpha = Math.random() * Math.PI * 2
         const beta = Math.random() * Math.PI - Math.PI / 2
+        radius = randomRadius ? minRadius + Math.random() * (maxRadius - minRadius) : fixedRadius // 조건에 따른 반경 설정
         x = radius * Math.sin(alpha) * Math.cos(beta)
         y = radius * Math.sin(alpha) * Math.sin(beta)
         z = radius * Math.cos(alpha)
@@ -105,12 +118,12 @@ function Network({ length, isEmotion }: { length?: number; isEmotion?: boolean }
             break
           }
         }
-      } while (tooClose) // 이 조건이 참일 때까지 새 위치를 생성
+      } while (tooClose)
 
       nodes.push(new THREE.Vector3(x, y, z))
     }
     return nodes
-  }, [length])
+  }, [length, randomRadius]) // randomRadius 의존성 추가
 
   const edges = useMemo(() => {
     const edges = []
@@ -169,7 +182,7 @@ function Network({ length, isEmotion }: { length?: number; isEmotion?: boolean }
         />
       ))}
       {edges.map((edge, index) => (
-        <Edge key={index} points={edge.map((node: { toArray: () => any }) => node.toArray())} />
+        <Edge key={index} lineWidth={lineWidth} points={edge.map((node: { toArray: () => any }) => node.toArray())} />
       ))}
     </>
   )
@@ -193,6 +206,8 @@ export default function Page() {
   const [isPerf, setIsPerf] = useState(false)
   const [length, setLength] = useState(240)
   const [isEmotion, setIsEmotion] = useState(true)
+  const [randomRadius, setRandomRadius] = useState(false) // 반경 랜덤 모드 토글
+  const [lineWidth, setLineWidth] = useState(false)
 
   return (
     <>
@@ -226,9 +241,21 @@ export default function Page() {
                   Number of nodes
                 </label>
                 <div className='pretty p-switch p-fill text-xs'>
+                  <input type='checkbox' checked={lineWidth} onChange={(e) => setLineWidth(e.target.checked)} />
+                  <div className='state'>
+                    <label className='text-white'>edges On/Off</label>
+                  </div>
+                </div>
+                <div className='pretty p-switch p-fill text-xs'>
                   <input type='checkbox' checked={isEmotion} onChange={(e) => setIsEmotion(e.target.checked)} />
                   <div className='state'>
                     <label className='text-white'>emotion On/Off</label>
+                  </div>
+                </div>
+                <div className='pretty p-switch p-fill text-xs'>
+                  <input type='checkbox' checked={randomRadius} onChange={(e) => setRandomRadius(e.target.checked)} />
+                  <div className='state'>
+                    <label className='text-white'>time On/Off</label>
                   </div>
                 </div>
               </div>
@@ -242,7 +269,13 @@ export default function Page() {
                 {/* <Stars /> */}
                 <pointLight position={[10, 10, 10]} />
                 <Resize scale={5}>
-                  <Network key={length} length={length} isEmotion={isEmotion} />
+                  <Network
+                    key={length}
+                    length={length}
+                    isEmotion={isEmotion}
+                    randomRadius={randomRadius}
+                    lineWidth={lineWidth ? 0.0 : 0.1}
+                  />
                 </Resize>
                 <CameraControls />
               </Suspense>
