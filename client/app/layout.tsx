@@ -2,6 +2,7 @@ import { Layout } from '@/components/dom/Layout'
 import '@/global.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata = {
   title: 'TPO + F',
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
         {/* To avoid FOUT with styled-components wrap Layout with StyledComponentsRegistry https://beta.nextjs.org/docs/styling/css-in-js#styled-components */}
         <Layout>{children}</Layout>
         <Analytics />
+        <SpeedInsights />
       </body>
       <GoogleAnalytics gaId='G-52JF83J0TD' />
     </html>

@@ -16,6 +16,7 @@
     "@react-three/fiber": "^8.15.12",
     "@studio-freight/lenis": "^1.0.42",
     "@vercel/analytics": "^1.2.2",
+    "@vercel/speed-insights": "^1.0.10",
     "glsl-random": "^0.0.5",
     "maath": "^0.10.7",
     "next": "^14.0.4",
