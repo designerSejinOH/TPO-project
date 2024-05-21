@@ -24,7 +24,8 @@
     "react-dom": "^18.2.0",
     "three": "^0.160.0",
     "three-stdlib": "^2.30.0",
-    "tunnel-rat": "^0.1.2"
+    "tunnel-rat": "^0.1.2",
+    "vercel": "^34.2.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.4",

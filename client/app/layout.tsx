@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         {/* To avoid FOUT with styled-components wrap Layout with StyledComponentsRegistry https://beta.nextjs.org/docs/styling/css-in-js#styled-components */}
         <Layout>{children}</Layout>
       </body>
-      <GoogleAnalytics gaId='GTM-WK2X3PBL' />
+      <GoogleAnalytics gaId='G-52JF83J0TD' />
     </html>
   )
 }
