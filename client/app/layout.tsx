@@ -1,5 +1,6 @@
 import { Layout } from '@/components/dom/Layout'
 import '@/global.css'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata = {
   title: 'TPO + F',
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
         {/* To avoid FOUT with styled-components wrap Layout with StyledComponentsRegistry https://beta.nextjs.org/docs/styling/css-in-js#styled-components */}
         <Layout>{children}</Layout>
       </body>
+      <GoogleAnalytics gaId='GTM-WK2X3PBL' />
     </html>
   )
 }
